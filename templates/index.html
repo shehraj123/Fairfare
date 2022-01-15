@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="style.css" rel="stylesheet">
+  <link href='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css' rel='stylesheet' />
 </head>
 <body>
   <h1 class="text-3xl font-bold underline" align="center">
@@ -29,8 +29,16 @@
   </div>
 
   <div id="map" class="map">
-    <script src="index.js" type="module"></script>
   </div>
 
+  <script>
+
+mapboxgl.accessToken = 'pk.eyJ1IjoiZnJpZW5kbHliYWtlciIsImEiOiJja3lnZnE5dnkxMGt3MnJtazMzdzV2NXZsIn0.M1eGhDgpm4VzVswVRExBxQ';
+var map = new mapboxgl.Map({
+container: 'map',
+style: 'mapbox://styles/mapbox/light-v10'
+});
+
+</script>
 </body>
 </html>

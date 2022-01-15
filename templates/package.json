@@ -9,6 +9,7 @@
         "vite": "^2.7.12"
     },
     "dependencies": {
+        "mapbox-gl": "^2.6.1",
         "ol": "^6.12.0",
         "rollup": "^2.64.0"
     }
