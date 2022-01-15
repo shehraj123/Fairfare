@@ -2,8 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+@import "node_modules/ol/ol.css";
+
 #map {
     height: 400px;
     width: 100%;
-    background-color: gray;
+    background-color: blue;
 }
