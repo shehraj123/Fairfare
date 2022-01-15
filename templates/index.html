@@ -3,11 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="/dist/main.css" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+  <script src="index.js"></script>
 </head>
 <body>
-  <h1 class="text-3xl font-bold underline">
-    Hello world!
+  <h1 class="text-3xl font-bold underline" align="center">
+    Fair Fare
   </h1>
+
+  <br>
+
+  <div align="center" id="data">
+    <label for="pickup">Pick Up Destination</label>
+    <input id="pickup" name="pickup">
+
+    <br>
+
+    <label for="dropoff">Drop Off Destination</label>
+    <input id="dropoff" name="dropoff">
+
+    <br>
+
+    <label for="passcount">Number of Passengers</label>
+    <input id="passcount" name="passcount">
+
+  </div>
+
+  <div id="map" class="map">
+  </div>
 </body>
 </html>
