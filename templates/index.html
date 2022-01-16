@@ -20,6 +20,7 @@
 		<div align="center" id="data">
 			<label for="pickup">Pick Up Destination</label>
 			<input id="pickup" name="pickup">
+			<button id="choose-pickup" onclick="setPickUp()">Choose</button>
 
 			<br>
 
@@ -66,7 +67,9 @@
 			center: [-113.52798079975238, 53.52448047102317], // starting position [lng, lat]
 			zoom: 15 // starting zoom
 			});
-			
+
+			var pickUpChosen = false;
+
 			map.on('mousemove', (e) => {
 				document.getElementById('info').innerHTML =
 				// `e.point` is the x, y coordinates of the `mousemove` event
@@ -78,15 +81,34 @@
 			});
 
 			map.on('click', function(e) {
-				var coordinates = e.lngLat;
-				new mapboxgl.Popup()
-				.setLngLat(coordinates)
-				.setHTML('Pick Up: <br/>' + coordinates)
-				.addTo(map);
-				
-				var coords = new String(e.lngLat);
-				document.getElementById("pickup").value = coords;
+				if (!pickUpChosen) {
+					var coordinates = e.lngLat;
+					new mapboxgl.Popup()
+					.setLngLat(coordinates)
+					.setHTML('Pick Up: <br/>' + coordinates)
+					.addTo(map);
+					
+					var coords = coordinates.toArray();
+					var lng = coords[0].toFixed(5).toString();
+					var lat = coords[1].toFixed(5).toString();
+					document.getElementById("pickup").value = lng+", "+lat;
+				} else {
+					var coordinates = e.lngLat;
+					new mapboxgl.Popup()
+					.setLngLat(coordinates)
+					.setHTML('Drop Off: <br/>' + coordinates)
+					.addTo(map);
+					
+					var coords = coordinates.toArray();
+					var lng = coords[0].toFixed(5).toString();
+					var lat = coords[1].toFixed(5).toString();
+					document.getElementById("dropoff").value = lng+", "+lat;
+				}
 			});
+
+			function setPickUp() {
+				pickUpChosen = true;
+			}
 		</script>
 	</body>
 </html>
