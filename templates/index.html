@@ -76,6 +76,17 @@
 				// `e.lngLat` is the longitude, latitude geographical position of the event.
 				JSON.stringify(e.lngLat.wrap());
 			});
+
+			map.on('click', function(e) {
+				var coordinates = e.lngLat;
+				new mapboxgl.Popup()
+				.setLngLat(coordinates)
+				.setHTML('Pick Up: <br/>' + coordinates)
+				.addTo(map);
+				
+				var coords = new String(e.lngLat);
+				document.getElementById("pickup").value = coords;
+			});
 		</script>
 	</body>
 </html>

@@ -5,7 +5,8 @@
 @import "node_modules/ol/ol.css";
 
 #map {
-    height: 400px;
-    width: 100%;
-    background-color: gray;
+	    width: 50%; 
+		height: 500px; 
+		margin: auto;
+		padding: 50px;
 }
