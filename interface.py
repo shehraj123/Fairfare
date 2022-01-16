@@ -5,9 +5,11 @@ import numpy as np
 import pandas as pd
 import joblib
 
+mdl = model.createModel("train_data.csv")
+
 class Predictor:
-    def __init__(self, name):
-        self.LR = model.createModel("train_data.csv")
+    def __init__(self):
+        self.LR = mdl
 
 
     def dump(self):    
@@ -27,6 +29,6 @@ class Predictor:
         return pred[0]
 
 if (__name__ == '__main__'):
-    pr = Predictor("train_data.csv")
+    pr = Predictor()
     pr.predictCost(-73.844311,40.721319,-73.84161,40.712278,1)
     pr.dump()
