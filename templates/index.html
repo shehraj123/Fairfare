@@ -11,6 +11,9 @@
 	</head>
 
 	<body>
+		<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.js"></script>
+		<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.css" type="text/css">
+
 		<h1 class="text-3xl font-bold underline" align="center">
 			Fair Fare
 		</h1>
@@ -49,6 +52,7 @@
 		</div>
 
 		<script>
+	
 			mapboxgl.accessToken = 'pk.eyJ1Ijoic2hlaHJhaiIsImEiOiJja3lnZ3V5dHkwbW1kMm9uYXdreXM2ZTVxIn0.MX2pF5B7VtOF85Il3xm8cQ';
 			const map = new mapboxgl.Map({
 			container: 'map', // container ID
@@ -61,6 +65,13 @@
 			var markersOnMap = [];
 
 			const popup = document.getElementsByClassName('mapboxgl-popup');
+
+			map.addControl(
+				new MapboxDirections({
+				accessToken: mapboxgl.accessToken
+				}),
+				'top-left'
+			);
 
 			map.on('click', function(e) {
 				if (!pickUpChosen) {
