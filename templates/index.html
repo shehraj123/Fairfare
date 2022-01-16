@@ -48,22 +48,6 @@
 		'>
 		</div>
 
-		<pre id="info"
-		style="
-			display: table;
-			position: relative;
-			margin: 0px auto;
-			word-wrap: anywhere;
-			white-space: pre-wrap;
-			padding: 10px;
-			border: none;
-			border-radius: 3px;
-			font-size: 12px;
-			text-align: center;
-			color: #222;
-			background: #fff;
-		">
-		</pre>
 		<script>
 			mapboxgl.accessToken = 'pk.eyJ1Ijoic2hlaHJhaiIsImEiOiJja3lnZ3V5dHkwbW1kMm9uYXdreXM2ZTVxIn0.MX2pF5B7VtOF85Il3xm8cQ';
 			const map = new mapboxgl.Map({
@@ -74,21 +58,20 @@
 			});
 
 			var pickUpChosen = false;
+			var markersOnMap = [];
 
 			const popup = document.getElementsByClassName('mapboxgl-popup');
 
-			map.on('mousemove', (e) => {
-				document.getElementById('info').innerHTML =
-				// `e.point` is the x, y coordinates of the `mousemove` event
-				// relative to the top-left corner of the map.
-				JSON.stringify(e.point) +
-				'<br />' +
-				// `e.lngLat` is the longitude, latitude geographical position of the event.
-				JSON.stringify(e.lngLat.wrap());
-			});
-
 			map.on('click', function(e) {
 				if (!pickUpChosen) {
+
+					if (markersOnMap.length > 0) {
+						for (var i = 0; i < markersOnMap.length; i++) {
+							markersOnMap[i].remove();
+						}
+						markersOnMap = [];
+					}
+
 					var coordinates = e.lngLat;
 					new mapboxgl.Popup()
 					.setLngLat(coordinates)
@@ -125,6 +108,7 @@
 				const pickUpMarker = new mapboxgl.Marker({color: 'green'})
 					.setLngLat([lng, lat])
 					.addTo(map);
+				markersOnMap.push(pickUpMarker);
 
 				var lng = parseFloat(coordinates[0]).toFixed(5);
 				var lat = parseFloat(coordinates[1]).toFixed(5);
@@ -137,13 +121,14 @@
 				var coordinates = document.getElementById("dropoff").value.split(",");
 				var lng = parseFloat(coordinates[0]);
 				var lat = parseFloat(coordinates[1]);
-				
+
 				if ( popup.length ) {
 					popup[0].remove();
 				}
 				const dropOffMarker = new mapboxgl.Marker({color: 'red'})
 					.setLngLat([lng, lat])
 					.addTo(map);
+				markersOnMap.push(dropOffMarker);
 
 				var lng = parseFloat(coordinates[0]).toFixed(5);
 				var lat = parseFloat(coordinates[1]).toFixed(5);
