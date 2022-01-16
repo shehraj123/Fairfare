@@ -1,46 +1,81 @@
 <!doctype html>
 <html>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css' rel='stylesheet' />
-  
-<script src='https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js'></script>
-<link href='https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css' rel='stylesheet' />
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link href='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css' rel='stylesheet' />
+		
+		<script src='https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js'></script>
+		<link href='https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css' rel='stylesheet' />
 
-</head>
-<body>
-  <h1 class="text-3xl font-bold underline" align="center">
-    Fair Fare
-  </h1>
+	</head>
 
-  <br>
+	<body>
+		<h1 class="text-3xl font-bold underline" align="center">
+			Fair Fare
+		</h1>
 
-  <div align="center" id="data">
-    <label for="pickup">Pick Up Destination</label>
-    <input id="pickup" name="pickup">
+		<br>
 
-    <br>
+		<div align="center" id="data">
+			<label for="pickup">Pick Up Destination</label>
+			<input id="pickup" name="pickup">
 
-    <label for="dropoff">Drop Off Destination</label>
-    <input id="dropoff" name="dropoff">
+			<br>
 
-    <br>
+			<label for="dropoff">Drop Off Destination</label>
+			<input id="dropoff" name="dropoff">
 
-    <label for="passcount">Number of Passengers</label>
-    <input id="passcount" name="passcount">
+			<br>
 
-  </div>
+			<label for="passcount">Number of Passengers</label>
+			<input id="passcount" name="passcount">
 
-  <div id='map' style='width: 400px; height: 300px;'></div>
-<script>
-mapboxgl.accessToken = 'pk.eyJ1Ijoic2hlaHJhaiIsImEiOiJja3lnZ3V5dHkwbW1kMm9uYXdreXM2ZTVxIn0.MX2pF5B7VtOF85Il3xm8cQ';
-const map = new mapboxgl.Map({
-container: 'map', // container ID
-style: 'mapbox://styles/mapbox/streets-v11', // style URL
-center: [-74.5, 40], // starting position [lng, lat]
-zoom: 9 // starting zoom
-});
-</script>
-</body>
+		</div>
+
+		<div id='map' 
+		style='
+		width: 50%; 
+		height: 500px; 
+		margin: auto;
+		padding: 50px;
+		'>
+		</div>
+
+		<pre id="info"
+		style="
+			display: table;
+			position: relative;
+			margin: 0px auto;
+			word-wrap: anywhere;
+			white-space: pre-wrap;
+			padding: 10px;
+			border: none;
+			border-radius: 3px;
+			font-size: 12px;
+			text-align: center;
+			color: #222;
+			background: #fff;
+		">
+		</pre>
+		<script>
+			mapboxgl.accessToken = 'pk.eyJ1Ijoic2hlaHJhaiIsImEiOiJja3lnZ3V5dHkwbW1kMm9uYXdreXM2ZTVxIn0.MX2pF5B7VtOF85Il3xm8cQ';
+			const map = new mapboxgl.Map({
+			container: 'map', // container ID
+			style: 'mapbox://styles/mapbox/streets-v11', // style URL
+			center: [-74.5, 40], // starting position [lng, lat]
+			zoom: 9 // starting zoom
+			});
+			
+			map.on('mousemove', (e) => {
+				document.getElementById('info').innerHTML =
+				// `e.point` is the x, y coordinates of the `mousemove` event
+				// relative to the top-left corner of the map.
+				JSON.stringify(e.point) +
+				'<br />' +
+				// `e.lngLat` is the longitude, latitude geographical position of the event.
+				JSON.stringify(e.lngLat.wrap());
+			});
+		</script>
+	</body>
 </html>
