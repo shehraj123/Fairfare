@@ -25,7 +25,7 @@ def map(request):
         passengers = int(passengers)
         pr = interface.Predictor()
         pred = pr.predictCost(pickup_long, pickup_lat, dest_long, dest_lat, passengers)
-        pred = abs(round(pred, 2))*10
+        pred = '$' + str(round(pred, 2))
         context = {
         'predictedcost': pred  # {{predictedcost}}
         }

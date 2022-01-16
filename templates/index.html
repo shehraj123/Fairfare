@@ -34,12 +34,12 @@
       Fair-Fare
 	</h1>
 
+  <div class="mx-1 my-1" align="center" id="data">
     <form method='post' action='/result'>
 		{% csrf_token %}
-      <div class="mx-1 my-1" align="center" id="data">
 	
-        <input id="pickup" name="pickup"  />
-        <input id="dropoff" name="dropoff"  />
+        <input id="pickup" name="pickup"  type="hidden"/>
+        <input id="dropoff" name="dropoff"  type="hidden"/>
 
         <label
           for="passcount"
@@ -56,11 +56,14 @@
         <button class="transition ease-in-out delay-150 bg-blue-500 hover:-translate-y-1 hover:scale-110 hover:bg-indigo-500 duration-300 mx-20 my-14 h-8 w-36 rounded-full text-slate-100">
             See your fare..
         </button>
+      </form>
 
+      <button id="submit" onClick="submitData()"
+      class="transition ease-in-out delay-150 bg-blue-500 hover:-translate-y-1 hover:scale-110 hover:bg-indigo-500 duration-300 mx-20 my-5 h-8 w-36 rounded-full text-slate-100"
+      >Choose</button>
 		
       </div>
-    </form>
-    <button id="submit" onClick="submitData()" class="text-white">Choose</button>
+
     <div
       class="ring-8 ring-blue-500  rounded-lg  hover:shadow-inner"
       id="map"
@@ -73,8 +76,8 @@
       const map = new mapboxgl.Map({
         container: "map", // container ID
         style: "mapbox://styles/mapbox/streets-v11", // style URL
-        center: [-113.52798079975238, 53.52448047102317], // starting position [lng, lat]
-        zoom: 15, // starting zoom
+        center: [-74.74, 40.22], // starting position [lng, lat]
+        zoom: 9, // starting zoom
       });
 
       var pickUpChosen = false;
