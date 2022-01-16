@@ -26,11 +26,16 @@
 
 			<label for="dropoff">Drop Off Destination</label>
 			<input id="dropoff" name="dropoff">
+			<button id="choose-pickup" onclick="setDropOff()">Choose</button>
 
 			<br>
 
 			<label for="passcount">Number of Passengers</label>
 			<input id="passcount" name="passcount">
+
+			<br>
+
+			<button id="submit">Submit</button>
 
 		</div>
 
@@ -70,6 +75,8 @@
 
 			var pickUpChosen = false;
 
+			const popup = document.getElementsByClassName('mapboxgl-popup');
+
 			map.on('mousemove', (e) => {
 				document.getElementById('info').innerHTML =
 				// `e.point` is the x, y coordinates of the `mousemove` event
@@ -89,8 +96,8 @@
 					.addTo(map);
 					
 					var coords = coordinates.toArray();
-					var lng = coords[0].toFixed(5).toString();
-					var lat = coords[1].toFixed(5).toString();
+					var lng = coords[0].toString();
+					var lat = coords[1].toString();
 					document.getElementById("pickup").value = lng+", "+lat;
 				} else {
 					var coordinates = e.lngLat;
@@ -100,14 +107,47 @@
 					.addTo(map);
 					
 					var coords = coordinates.toArray();
-					var lng = coords[0].toFixed(5).toString();
-					var lat = coords[1].toFixed(5).toString();
+					var lng = coords[0].toString();
+					var lat = coords[1].toString();
 					document.getElementById("dropoff").value = lng+", "+lat;
 				}
 			});
 
 			function setPickUp() {
 				pickUpChosen = true;
+				var coordinates = document.getElementById("pickup").value.split(",");
+				var lng = parseFloat(coordinates[0]);
+				var lat = parseFloat(coordinates[1]);
+
+				if ( popup.length ) {
+					popup[0].remove();
+				}
+				const pickUpMarker = new mapboxgl.Marker({color: 'green'})
+					.setLngLat([lng, lat])
+					.addTo(map);
+
+				var lng = parseFloat(coordinates[0]).toFixed(5);
+				var lat = parseFloat(coordinates[1]).toFixed(5);
+				document.getElementById("pickup").value = lng.toString()+", "+lat.toString();
+			}
+
+			function setDropOff() {
+				pickUpChosen = false;
+
+				var coordinates = document.getElementById("dropoff").value.split(",");
+				var lng = parseFloat(coordinates[0]);
+				var lat = parseFloat(coordinates[1]);
+				
+				if ( popup.length ) {
+					popup[0].remove();
+				}
+				const dropOffMarker = new mapboxgl.Marker({color: 'red'})
+					.setLngLat([lng, lat])
+					.addTo(map);
+
+				var lng = parseFloat(coordinates[0]).toFixed(5);
+				var lat = parseFloat(coordinates[1]).toFixed(5);
+				document.getElementById("dropoff").value = lng.toString()+", "+lat.toString();
 			}
 		</script>
 	</body>
