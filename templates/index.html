@@ -2,34 +2,43 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Fair Fare</title>
 		<link href='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css' rel='stylesheet' />
 		
 		<script src='https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js'></script>
 		<link href='https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css' rel='stylesheet' />
+		<script src="https://cdn.tailwindcss.com"></script>
 
 	</head>
 
-	<body>
-		<h1 class="text-3xl font-bold underline" align="center">
+	<body class="bg-slate-500">
+		<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.js"></script>
+		<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.css" type="text/css">
+
+		<h1 class="mx-5 my-2 text-slate-100 font-extralight text-8xl h-32 hover:font-semibold" align="center">
 			Fair Fare
 		</h1>
 
 		<br>
 
 		<div align="center" id="data">
-			<label for="pickup">Pick Up Destination</label>
-			<input id="pickup" name="pickup">
+			<input id="pickup" name="pickup" type="hidden">
+			<input id="dropoff" name="dropoff" type="hidden">
+			<br>
+
+			<label for="passcount"
+			class="mx-2 my-2 px-2 py-2 bg-green-400 font-extralight text-black rounded-full">
+			Number of Passengers</label>
+			<input id="passcount" name="passcount"
+			class="mx-2 my-2 px-2 py-2 text-black font-extralight rounded-full w-15">
 
 			<br>
 
-			<label for="dropoff">Drop Off Destination</label>
-			<input id="dropoff" name="dropoff">
-
-			<br>
-
-			<label for="passcount">Number of Passengers</label>
-			<input id="passcount" name="passcount">
+			<button id="submit"
+			class="mx-2 my-4 px-2 py-2 bg-green-400 font-extralight font- text-black rounded-full" 
+			>Submit</button>
 
 		</div>
 
@@ -42,23 +51,8 @@
 		'>
 		</div>
 
-		<pre id="info"
-		style="
-			display: table;
-			position: relative;
-			margin: 0px auto;
-			word-wrap: anywhere;
-			white-space: pre-wrap;
-			padding: 10px;
-			border: none;
-			border-radius: 3px;
-			font-size: 12px;
-			text-align: center;
-			color: #222;
-			background: #fff;
-		">
-		</pre>
 		<script>
+	
 			mapboxgl.accessToken = 'pk.eyJ1Ijoic2hlaHJhaiIsImEiOiJja3lnZ3V5dHkwbW1kMm9uYXdreXM2ZTVxIn0.MX2pF5B7VtOF85Il3xm8cQ';
 			const map = new mapboxgl.Map({
 			container: 'map', // container ID
@@ -66,27 +60,86 @@
 			center: [-113.52798079975238, 53.52448047102317], // starting position [lng, lat]
 			zoom: 15 // starting zoom
 			});
-			
-			map.on('mousemove', (e) => {
-				document.getElementById('info').innerHTML =
-				// `e.point` is the x, y coordinates of the `mousemove` event
-				// relative to the top-left corner of the map.
-				JSON.stringify(e.point) +
-				'<br />' +
-				// `e.lngLat` is the longitude, latitude geographical position of the event.
-				JSON.stringify(e.lngLat.wrap());
-			});
+
+			var pickUpChosen = false;
+			var markersOnMap = [];
+
+			const popup = document.getElementsByClassName('mapboxgl-popup');
+
+			var directions = new MapboxDirections({
+				accessToken: mapboxgl.accessToken
+				});
+
+			map.addControl(directions, , 'top-left');
 
 			map.on('click', function(e) {
-				var coordinates = e.lngLat;
-				new mapboxgl.Popup()
-				.setLngLat(coordinates)
-				.setHTML('Pick Up: <br/>' + coordinates)
-				.addTo(map);
-				
-				var coords = new String(e.lngLat);
-				document.getElementById("pickup").value = coords;
+				if (!pickUpChosen) {
+
+					if (markersOnMap.length > 0) {
+						for (var i = 0; i < markersOnMap.length; i++) {
+							markersOnMap[i].remove();
+						}
+						markersOnMap = [];
+					}
+
+					var coordinates = e.lngLat;
+					new mapboxgl.Popup()
+					.setLngLat(coordinates)
+					.setHTML('Pick Up: <br/>' + coordinates)
+					
+					var coords = coordinates.toArray();
+					var lng = coords[0].toString();
+					var lat = coords[1].toString();
+					document.getElementById("pickup").value = lng+", "+lat;
+				} else {
+					var coordinates = e.lngLat;
+					new mapboxgl.Popup()
+					.setLngLat(coordinates)
+					.setHTML('Drop Off: <br/>' + coordinates)
+					
+					var coords = coordinates.toArray();
+					var lng = coords[0].toString();
+					var lat = coords[1].toString();
+					document.getElementById("dropoff").value = lng+", "+lat;
+				}
 			});
+
+			function setPickUp() {
+				pickUpChosen = true;
+				var coordinates = document.getElementById("pickup").value.split(",");
+				var lng = parseFloat(coordinates[0]);
+				var lat = parseFloat(coordinates[1]);
+
+				if ( popup.length ) {
+					popup[0].remove();
+				}
+				const pickUpMarker = new mapboxgl.Marker({color: 'green'})
+					.setLngLat([lng, lat])
+				markersOnMap.push(pickUpMarker);
+
+				var lng = parseFloat(coordinates[0]).toFixed(5);
+				var lat = parseFloat(coordinates[1]).toFixed(5);
+				document.getElementById("pickup").value = lng.toString()+", "+lat.toString();
+			}
+
+			function setDropOff() {
+				pickUpChosen = false;
+
+				var coordinates = document.getElementById("dropoff").value.split(",");
+				var lng = parseFloat(coordinates[0]);
+				var lat = parseFloat(coordinates[1]);
+
+				if ( popup.length ) {
+					popup[0].remove();
+				}
+				const dropOffMarker = new mapboxgl.Marker({color: 'red'})
+					.setLngLat([lng, lat])
+				markersOnMap.push(dropOffMarker);
+
+				var lng = parseFloat(coordinates[0]).toFixed(5);
+				var lat = parseFloat(coordinates[1]).toFixed(5);
+				document.getElementById("dropoff").value = lng.toString()+", "+lat.toString();
+			}
 		</script>
 	</body>
 </html>

@@ -3,21 +3,14 @@ import model
 import sqlite3
 import numpy as np
 import pandas as pd
+import joblib
 
 class Predictor:
-    def __init__(self, csv):
-        self.LR = model.createModel(csv)
+    def __init__(self, name):
+        self.LR = joblib.load(name)
 
-    def dump(self):
-        import joblib
+    def dump(self):    
         joblib.dump(self.LR, "model.pkl")
-
-    def load(self, modelname):
-        import joblib
-        self.LR = joblib.load("modelname")
-
-    def getNewData(self, dbPath):
-        pass # TODO: convert sqlite db to csv
 
     def predictCost(self, pickup_long, pickup_lat, dest_long, dest_lat, num_pas):
         arr = {'pickup_longitude': [pickup_long],
