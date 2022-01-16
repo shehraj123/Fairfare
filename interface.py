@@ -7,7 +7,8 @@ import joblib
 
 class Predictor:
     def __init__(self, name):
-        self.LR = joblib.load(name)
+        self.LR = model.createModel("train_data.csv")
+
 
     def dump(self):    
         joblib.dump(self.LR, "model.pkl")
@@ -19,6 +20,7 @@ class Predictor:
                 'dropoff_latitude': [dest_lat], 
                 'passenger_count': [num_pas]}
         df = pd.DataFrame(arr)
+        df.head()
         pred = self.LR.predict(df)
         print("Predicted Cost", pred)
         
