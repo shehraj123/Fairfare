@@ -5,11 +5,9 @@ def createModel(csv):
 
     df = pd.read_csv(csv)
     df = clean(df)
-    df = scale(df)
     (X_train, X_test, y_train, y_test) = trainTestSplit(df, 0.2, 1)
 
     model = train(X_train, y_train)
-
     pred = model.predict(X_test)
     evaluate(y_test, pred)
 
