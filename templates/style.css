@@ -14,3 +14,7 @@
 #heading {
 		font-family: 'Prompt', sans-serif;
 }
+
+#body {
+	background-image: url("../../static/img/pin.png");
+}
