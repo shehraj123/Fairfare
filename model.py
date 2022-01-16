@@ -36,6 +36,8 @@ def train(X_train, y_train):
     lr = LinearRegression()
     lr.fit(X_train, y_train)
 
+    return lr
+
 def scale(df):
     from sklearn.preprocessing import MinMaxScaler
     mn = MinMaxScaler()

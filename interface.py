@@ -1,10 +1,10 @@
 # Predictor public interface
-from . import model
+import model
 import sqlite3
 
 class Predictor():
-    def _init_(self, csv):
-        LR = model.createModel(csv)
+    def __init__(self, csv):
+        self.LR = model.createModel(csv)
 
     def dump(self):
         import joblib
@@ -15,4 +15,5 @@ class Predictor():
         self.LR = joblib.load("modelname")
 
     def getNewData(self, dbPath):
-        pass
+        pass # TODO: convert sqlite db to csv 
+ 
