@@ -38,8 +38,8 @@
 		{% csrf_token %}
       <div class="mx-1 my-1" align="center" id="data">
 	
-        <input id="pickup" name="pickup" type="hidden" />
-        <input id="dropoff" name="dropoff" type="hidden" />
+        <input id="pickup" name="pickup"  />
+        <input id="dropoff" name="dropoff"  />
 
         <label
           for="passcount"
@@ -56,8 +56,11 @@
         <button class="transition ease-in-out delay-150 bg-blue-500 hover:-translate-y-1 hover:scale-110 hover:bg-indigo-500 duration-300 mx-20 my-14 h-8 w-36 rounded-full text-slate-100">
             See your fare..
         </button>
+
+		
       </div>
     </form>
+    <button id="submit" onClick="submitData()" class="text-white">Choose</button>
     <div
       class="ring-8 ring-blue-500  rounded-lg  hover:shadow-inner"
       id="map"
@@ -158,6 +161,17 @@
         document.getElementById("dropoff").value =
           lng.toString() + ", " + lat.toString();
       }
+
+	  function submitData() {
+		const obj = new Object(directions.getOrigin().geometry);
+		const dest = new Object(directions.getDestination().geometry);
+
+		setTimeout(
+			function() {
+				document.getElementById("pickup").value = obj.coordinates;
+				document.getElementById("dropoff").value = dest.coordinates;
+			}, 1000);
+	}
     </script>
   </body>
 </html>
